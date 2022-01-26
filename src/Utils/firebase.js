@@ -2,7 +2,7 @@
 
 import { initializeApp } from "firebase/app";
 import { getAnalytics } from "firebase/analytics";
-import {getFirestore, collection, getDocs, query} from "firebase/firestore";
+import {getFirestore,collectionGroup, getDocs, query, doc} from "firebase/firestore";
 import {getAuth} from "firebase/auth"
 // TODO: Add SDKs for Firebase products that you want to use
 // https://firebase.google.com/docs/web/setup#available-libraries
@@ -24,7 +24,16 @@ const firebaseApp = initializeApp(firebaseConfig);
 const analytics = getAnalytics(firebaseApp);
 export const db = getFirestore(firebaseApp);
 
+// one way to get ub collections: site -> employees -> admin -> data
+// export const subCollection = getDocs(collectionGroup(db, "admin")).then(snapshot =>{
+//   snapshot.docs.forEach((doc => {
+//     console.log(`This is the id:${doc.id}`,"This is the data",doc.data());
+//   }));
+// });
+
+
 //const carRef = collection(db, "cars");
+
 //data
 // getDocs(carRef).then( snapshot => {
 // console.log(snapshot.docs.map(doc => doc.data()));
