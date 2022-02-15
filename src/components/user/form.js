@@ -1,12 +1,12 @@
 import React, { useState } from "react";
-import { auth, createNewUser, signIn } from "../../Utils/firebase";
+import { auth, createNewUser,  signIn, signOutBaby,updateEmailBaby,emailCreds } from "../../Utils/firebase";
 
 function LoginForm() {
   const [userInfo, setUser] = useState({
     email: "",
     password: "",
   });
-  const [register, setRegister] = useState(true);
+  const [register, setRegister] = useState(false);
 
   function handleForm(e) {
     e.preventDefault();
@@ -45,6 +45,41 @@ function LoginForm() {
       [name]: value,
     }));
   }
+function handleLogout(){
+  signOutBaby(auth).then(() => {
+    console.log("You're Out");
+  }).catch((error) => {
+    // An error happened.
+  });
+}
+
+function handleGetUserInfo(){
+  let getUser = auth.currentUser;
+  if (getUser) {
+    // User is signed in, see docs for a list of available properties
+    // https://firebase.google.com/docs/reference/js/firebase.User
+    // ...
+     getUser.getIdTokenResult().then(res =>{
+      console.log(res);
+    });
+  } else {
+    // No user is signed in.
+    console.log("Nope NO INFO FOR YOU");
+  }
+}
+
+function handleUpdateEmail(){
+  let creds = emailCreds.credential("test@example.com", "123456");
+  updateEmailBaby(auth.currentUser, "test@exampleBABY2.com").then(() => {
+    // Email updated!
+    // ...
+    console.log("email Updated!");
+  }).catch((error) => {
+    // An error occurred
+    console.log(error);
+    // ...
+  });
+}
 
   return (
     <div>
@@ -73,6 +108,12 @@ function LoginForm() {
           {register ? "register" : "sign in"}
         </button>
       </form>
+      <hr/>
+      <button onClick={handleLogout}>Log Out</button>
+      <hr/>
+      <button onClick={handleGetUserInfo}>Get User Info</button>
+      <hr/>
+      <button onClick={handleUpdateEmail}>Update Email</button>
     </div>
   );
 }
