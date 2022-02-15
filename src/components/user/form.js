@@ -1,27 +1,26 @@
 import React, { useRef, useState } from "react";
 
 function LoginForm() {
-  const [email, setEmail] = useState("");
-  const [password, setPassword] = useState("");
+  const [user, setUser] = useState({
+    email: "",
+    password: "",
+  });
   const [register, setRegister] = useState(true);
-  const emailRef = useRef();
-  const passwordRef = useRef();
 
- function handleForm(e) {
+  function handleForm(e) {
     e.preventDefault();
-   if (register) {
-       console.log("register");
-   } else {
-       console.log("sign in");
-   }
-    
-  };
- function changeHandler(e)  {
-     let name = e.target.name;
-     let value = e.target.value;
-
-
- };
+    if (register) {
+      console.log(user );
+    } else {
+      console.log(user );
+    }
+  }
+  function changeHandler(e) {
+    let name = e.target.name;
+    let value = e.target.value
+    setUser((prevState) => ({
+      ...prevState, [name]: value}));
+  }
 
   return (
     <div>
@@ -29,26 +28,26 @@ function LoginForm() {
         <div className="form-group">
           <label>Email</label>
           <input
-          ref={emailRef}
+            placeholder="email"
             type="email"
             className="form-control"
-            name="Email"
-            onChange={(e) => changeHandler(e)}
+            name="email"
+            onChange={changeHandler}
           ></input>
         </div>
         <div className="form-group">
           <label>Password</label>
           <input
-          ref={passwordRef}
+            placeholder="password"
             type="password"
             className="form-control"
-            name="Password"
-            onChange={(e) => changeHandler(e)}
+            name="password"
+            onChange={changeHandler}
           ></input>
         </div>
-      <button type="submit" className="btn btn-success" >
-        {register ? "register" : "sign in"}
-      </button>
+        <button type="submit" className="btn btn-success">
+          {register ? "register" : "sign in"}
+        </button>
       </form>
     </div>
   );
