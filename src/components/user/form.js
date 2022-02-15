@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import {auth, createNewUser } from "../../Utils/firebase"
+import { auth, createNewUser, signIn } from "../../Utils/firebase";
 
 function LoginForm() {
   const [userInfo, setUser] = useState({
@@ -9,32 +9,41 @@ function LoginForm() {
   const [register, setRegister] = useState(true);
 
   function handleForm(e) {
-
     e.preventDefault();
     let email = userInfo.email;
     let password = userInfo.password;
-    createNewUser(auth, email, password)
-  .then((userCredential) => {
-    // Signed in 
-    const user = userCredential.user;
-    console.log(user);
-  })
-  .catch((error) => {
-    const errorCode = error.code;
-    const errorMessage = error.message;
-    // ..
-  });
+
     if (register) {
-      console.log(userInfo,register );
+      createNewUser(auth, email, password)
+        .then((userCredential) => {
+          // Signed in
+          const user = userCredential.user;
+          console.log("reg ", user);
+        })
+        .catch((error) => {
+          const errorCode = error.code;
+          const errorMessage = error.message;
+          // ..
+        });
     } else {
-      console.log(userInfo, register );
+      signIn(auth, email, password)
+        .then((userCredential) => {
+          const user = userCredential.user;
+          console.log("sign in ", user);
+        })
+        .catch((error) => {
+          const errorCode = error.code;
+          const errorMessage = error.message;
+        });
     }
   }
   function changeHandler(e) {
     let name = e.target.name;
-    let value = e.target.value
+    let value = e.target.value;
     setUser((prevState) => ({
-      ...prevState, [name]: value}));
+      ...prevState,
+      [name]: value,
+    }));
   }
 
   return (
