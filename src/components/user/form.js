@@ -1,18 +1,33 @@
-import React, { useRef, useState } from "react";
+import React, { useState } from "react";
+import {auth, createNewUser } from "../../Utils/firebase"
 
 function LoginForm() {
-  const [user, setUser] = useState({
+  const [userInfo, setUser] = useState({
     email: "",
     password: "",
   });
   const [register, setRegister] = useState(true);
 
   function handleForm(e) {
+
     e.preventDefault();
+    let email = userInfo.email;
+    let password = userInfo.password;
+    createNewUser(auth, email, password)
+  .then((userCredential) => {
+    // Signed in 
+    const user = userCredential.user;
+    console.log(user);
+  })
+  .catch((error) => {
+    const errorCode = error.code;
+    const errorMessage = error.message;
+    // ..
+  });
     if (register) {
-      console.log(user );
+      console.log(userInfo,register );
     } else {
-      console.log(user );
+      console.log(userInfo, register );
     }
   }
   function changeHandler(e) {

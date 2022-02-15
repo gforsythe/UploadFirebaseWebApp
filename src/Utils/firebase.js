@@ -3,7 +3,7 @@
 import { initializeApp } from "firebase/app";
 import { getAnalytics } from "firebase/analytics";
 import {getFirestore,collectionGroup, getDocs, query, doc} from "firebase/firestore";
-import {getAuth} from "firebase/auth"
+import {getAuth, createUserWithEmailAndPassword} from "firebase/auth"
 // TODO: Add SDKs for Firebase products that you want to use
 // https://firebase.google.com/docs/web/setup#available-libraries
 
@@ -23,6 +23,8 @@ const firebaseConfig = {
 const firebaseApp = initializeApp(firebaseConfig);
 const analytics = getAnalytics(firebaseApp);
 export const db = getFirestore(firebaseApp);
+export const auth = getAuth(firebaseApp)
+export const createNewUser = createUserWithEmailAndPassword;
 
 // one way to get ub collections: site -> employees -> admin -> data
 // export const subCollection = getDocs(collectionGroup(db, "admin")).then(snapshot =>{
