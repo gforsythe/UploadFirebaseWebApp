@@ -1,7 +1,7 @@
 import React from 'react';
-import Form from "./form";
+import LoginForm from "./form";
 function Login() {
-  return <Form/>;
+  return <LoginForm/>;
 }
 
 export default Login;
