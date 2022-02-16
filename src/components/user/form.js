@@ -1,5 +1,6 @@
+import { sendEmailVerification } from "firebase/auth";
 import React, { useState } from "react";
-import { auth, createNewUser,  signIn, signOutBaby,updateEmailBaby,emailCreds } from "../../Utils/firebase";
+import { auth, createNewUser,  signIn, signOutBaby,updateEmailBaby, updateProfileBaby } from "../../Utils/firebase";
 
 function LoginForm() {
   const [userInfo, setUser] = useState({
@@ -17,6 +18,10 @@ function LoginForm() {
       createNewUser(auth, email, password)
         .then((userCredential) => {
           // Signed in
+          sendEmailVerification(auth.currentUser)
+          .then(()=>{
+            alert("Email Link Sent");
+          })
           const user = userCredential.user;
           console.log("reg ", user);
         })
@@ -69,14 +74,32 @@ function handleGetUserInfo(){
 }
 
 function handleUpdateEmail(){
-  let creds = emailCreds.credential("test@example.com", "123456");
-  updateEmailBaby(auth.currentUser, "test@exampleBABY2.com").then(() => {
+  let getUser = auth.currentUser;
+  updateEmailBaby(getUser, "steve@gmail.com").then(() => {
     // Email updated!
     // ...
     console.log("email Updated!");
   }).catch((error) => {
     // An error occurred
     console.log(error);
+    // ...
+  });
+}
+
+
+function handleUpdateProfile(){
+  let getUser = auth.currentUser;
+  updateProfileBaby(getUser, {
+    displayName: "Bianca",
+    photoURL:"https://example.com/jane-q-user/profile.jpg",
+  })
+  .then(() => {
+    // Profile updated!
+    // ...
+    console.log("Updated Profile", getUser);
+
+  }).catch((error) => {
+    // An error occurred
     // ...
   });
 }
@@ -109,11 +132,13 @@ function handleUpdateEmail(){
         </button>
       </form>
       <hr/>
-      <button onClick={handleLogout}>Log Out</button>
+      <button className="btn btn-danger" onClick={handleLogout}>Log Out</button>
       <hr/>
-      <button onClick={handleGetUserInfo}>Get User Info</button>
+      <button className="btn btn-primary" onClick={handleGetUserInfo}>Get User Info</button>
       <hr/>
-      <button onClick={handleUpdateEmail}>Update Email</button>
+      <button className="btn btn-warning" onClick={handleUpdateEmail}>Update Email</button>
+      <hr/>
+      <button className="btn btn-info" onClick={handleUpdateProfile}>Update Profile</button>
     </div>
   );
 }
