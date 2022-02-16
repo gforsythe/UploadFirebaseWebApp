@@ -17,6 +17,8 @@ import {
   signOut,
   updateEmail,
   updateProfile,
+  GoogleAuthProvider,
+  signInWithPopup,
 } from "firebase/auth";
 // TODO: Add SDKs for Firebase products that you want to use
 // https://firebase.google.com/docs/web/setup#available-libraries
@@ -44,6 +46,8 @@ export const userAuthState = onAuthStateChanged;
 export const signOutBaby = signOut;
 export const updateEmailBaby = updateEmail;
 export const updateProfileBaby = updateProfile;
+export const googleAuthPro = GoogleAuthProvider;
+export const googlePopUp = signInWithPopup;
 
 // one way to get ub collections: site -> employees -> admin -> data
 // export const subCollection = getDocs(collectionGroup(db, "admin")).then(snapshot =>{
