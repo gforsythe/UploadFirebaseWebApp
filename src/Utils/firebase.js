@@ -8,6 +8,8 @@ import {
   getDocs,
   query,
   doc,
+  addDoc,
+  collection,
 } from "firebase/firestore";
 import {
   getAuth,
@@ -39,8 +41,8 @@ const firebaseConfig = {
 const firebaseApp = initializeApp(firebaseConfig);
 const analytics = getAnalytics(firebaseApp);
 export const db = getFirestore(firebaseApp);
-export const auth = getAuth(firebaseApp);
-export const createNewUser = createUserWithEmailAndPassword;
+export const auth = getAuth();
+export  const createNewUser = createUserWithEmailAndPassword;
 export const signIn = signInWithEmailAndPassword;
 export const userAuthState = onAuthStateChanged;
 export const signOutBaby = signOut;
@@ -48,6 +50,9 @@ export const updateEmailBaby = updateEmail;
 export const updateProfileBaby = updateProfile;
 export const googleAuthPro = GoogleAuthProvider;
 export const googlePopUp = signInWithPopup;
+
+
+
 
 // one way to get ub collections: site -> employees -> admin -> data
 // export const subCollection = getDocs(collectionGroup(db, "admin")).then(snapshot =>{

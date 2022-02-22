@@ -1,7 +1,10 @@
 import { sendEmailVerification } from "firebase/auth";
+import { addDoc, collection, doc, setDoc } from "firebase/firestore";
 import React, { useState } from "react";
+
 import {
   auth,
+  db,
   createNewUser,
   signIn,
   signOutBaby,
@@ -12,25 +15,35 @@ import {
 } from "../../Utils/firebase";
 
 function LoginForm() {
+  //creates a user object with email and password
   const [userInfo, setUser] = useState({
     email: "",
     password: "",
   });
-  const [register, setRegister] = useState(false);
 
+
+  // creation of a registration or a sign in for state
+  const [register, setRegister] = useState(true);
+
+  // take in the form info
   function handleForm(e) {
     e.preventDefault();
     let email = userInfo.email;
     let password = userInfo.password;
 
     if (register) {
-      createNewUser(auth, email, password)
+      //new reg then create a newUser
+     createNewUser(auth, email, password)
         .then((userCredential) => {
-          // Signed in
+          const user = userCredential.user;
+          const userEmail = user.email;
+          const userId = user.uid;
+          const  docRef = doc(db, 'users', userId);
+          const payload = {userEmail, userId}
+           setDoc(docRef,payload);
           sendEmailVerification(auth.currentUser).then(() => {
             alert("Email Link Sent");
           });
-          const user = userCredential.user;
           console.log("reg ", user);
         })
         .catch((error) => {
@@ -90,6 +103,8 @@ function LoginForm() {
     let getUser = auth.currentUser;
     updateEmailBaby(getUser, "steve@gmail.com")
       .then(() => {
+        //store on firestore
+
         // Email updated!
         // ...
         console.log("email Updated!");
@@ -119,6 +134,10 @@ function LoginForm() {
       });
   }
 
+function handleFireStoreRegisterUser(data) {
+
+}
+
   function handleGoogleSignIn(){
 const provider = new googleAuthPro()
     googlePopUp(auth, provider)
@@ -131,6 +150,7 @@ const provider = new googleAuthPro()
     const user = result.user;
     console.log("This is a google pop up!",user);
     // ...
+    handleFireStoreRegisterUser(user)
   }).catch((error) => {
     // Handle Errors here.
     const errorCode = error.code;
@@ -188,10 +208,10 @@ const provider = new googleAuthPro()
         Update Profile
       </button>
       <hr />
-        <button className="btn btn-lg btn-google btn-block text-uppercase btn-outline" onClick={handleGoogleSignIn}>
-          <p className="google-text">
-            <img  className="google-icon" src="https://upload.wikimedia.org/wikipedia/commons/5/53/Google_%22G%22_Logo.svg" />
-          Signup Using Google</p>
+        <button className="btn btn-lg btn-google btn-outline btn-outline " onClick={handleGoogleSignIn}>
+            <img alt="google-logo-alt" className="google-icon" src="https://upload.wikimedia.org/wikipedia/commons/5/53/Google_%22G%22_Logo.svg" />
+          
+          Log in with Google
         </button>
     </div>
   );
