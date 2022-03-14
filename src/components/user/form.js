@@ -43,6 +43,7 @@ function LoginForm() {
            setDoc(docRef,payload);
           sendEmailVerification(auth.currentUser).then(() => {
             alert("Email Link Sent");
+            
           });
           console.log("reg ", user);
         })
@@ -52,6 +53,7 @@ function LoginForm() {
           console.log("this is the error", errorCode, errorMessage);
           // ..
         });
+        
     } else {
       signIn(auth, email, password)
         .then((userCredential) => {

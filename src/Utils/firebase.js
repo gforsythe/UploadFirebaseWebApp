@@ -2,6 +2,8 @@
 
 import { initializeApp } from "firebase/app";
 import { getAnalytics } from "firebase/analytics";
+import { getStorage } from "firebase/storage";
+
 import {
   getFirestore,
   collectionGroup,
@@ -50,7 +52,7 @@ export const updateEmailBaby = updateEmail;
 export const updateProfileBaby = updateProfile;
 export const googleAuthPro = GoogleAuthProvider;
 export const googlePopUp = signInWithPopup;
-
+export const storage = getStorage(firebaseApp);
 
 
 
