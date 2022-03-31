@@ -2,7 +2,7 @@
 
 import { initializeApp } from "firebase/app";
 import { getAnalytics } from "firebase/analytics";
-import { getStorage } from "firebase/storage";
+import { getStorage, ref, uploadBytesResumable, getDownloadURL } from "firebase/storage";
 
 import {
   getFirestore,
@@ -53,7 +53,9 @@ export const updateProfileBaby = updateProfile;
 export const googleAuthPro = GoogleAuthProvider;
 export const googlePopUp = signInWithPopup;
 export const storage = getStorage(firebaseApp);
-
+export const storageRef = ref;
+export const uptask = uploadBytesResumable;
+export const urlStorage = getDownloadURL;
 
 
 // one way to get ub collections: site -> employees -> admin -> data
