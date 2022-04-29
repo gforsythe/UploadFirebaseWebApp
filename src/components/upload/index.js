@@ -1,14 +1,14 @@
 import React, { useState, useRef } from "react";
 import { getDownloadURL, ref, uploadBytesResumable } from "firebase/storage";
-import { auth, storage, db,   } from "../../Utils/firebase";
-import { doc, updateDoc, } from "firebase/firestore";
-
+import { auth, storage, db } from "../../Utils/firebase";
+import { doc, updateDoc } from "firebase/firestore";
+import ListUploads from "./list";
 function Upload() {
   const [progress, setProgress] = useState(0);
   const [selectedFile, setSelectedFile] = useState();
   const pauseRef = useRef();
   const resumeRef = useRef();
-  const cancelRef = useRef(); 
+  const cancelRef = useRef();
 
   const handleUpload = (e) => {
     e.preventDefault();
@@ -16,13 +16,11 @@ function Upload() {
     let fileRef = ref(storage, `images/${selectedFile.name}`);
     const metadata = {
       customMetadata: {
-        "PLEASE": "WORK",
-        "electric": "so cool!",
-      }
-     
-    }
+        PLEASE: "WORK",
+        electric: "so cool!",
+      },
+    };
     const uploadTask = uploadBytesResumable(fileRef, selectedFile, metadata);
-    
 
     uploadTask.on(
       "state_changed",
@@ -49,40 +47,36 @@ function Upload() {
       },
       (error) => {
         console.log(error);
-        setProgress(progress)
+        setProgress(progress);
       },
 
       () => {
-        getDownloadURL(uploadTask.snapshot.ref).then((downloadUrl)=>{
+        getDownloadURL(uploadTask.snapshot.ref).then((downloadUrl) => {
           console.log(`Check out the file ${downloadUrl}`);
-        })
-        
-        let getUser = auth.currentUser
-        let docRef = doc(db, 'users', getUser.uid)
-        updateDoc(docRef,{
-          image: uploadTask.snapshot.ref.name,  
-        })
+        });
+
+        let getUser = auth.currentUser;
+        let docRef = doc(db, "users", getUser.uid);
+        updateDoc(docRef, {
+          image: uploadTask.snapshot.ref.name,
+        });
       }
     );
 
-    pauseRef.current.addEventListener('click',()=>{
+    pauseRef.current.addEventListener("click", () => {
       uploadTask.pause();
     });
-    resumeRef.current.addEventListener('click', ()=>{
+    resumeRef.current.addEventListener("click", () => {
       uploadTask.resume();
     });
-    cancelRef.current.addEventListener('click', ()=>{
+    cancelRef.current.addEventListener("click", () => {
       uploadTask.cancel();
     });
-
-    
   };
   const handleChange = (event) => {
     const file = event.target.files[0];
     setSelectedFile(file);
   };
-
-  
 
   return (
     <>
@@ -91,24 +85,33 @@ function Upload() {
           <label>File</label>
           <h3>{progress}%</h3>
           <progress value={progress} max="100git"></progress>
-          <input   className="form-control" type="file" onChange={handleChange} />
+          <input className="form-control" type="file" onChange={handleChange} />
         </div>
         <button type="submit" className="btn btn-primary">
           Upload File
         </button>
       </form>
-      <hr/>
+      <hr />
       <div className="form-group">
-      <button className="btn btn-warning" ref={pauseRef}>PAUSE</button>
-      <br/>
-      <br/>
-      <button className="btn btn-success" ref={resumeRef}>RESUME</button>
-      <br/>
-      <br/>
-      <button className="btn btn-danger" ref={cancelRef}>CANCEL</button>
-
-
+        <button className="btn btn-warning" ref={pauseRef}>
+          PAUSE
+        </button>
+        <br />
+        <br />
+        <button className="btn btn-success" ref={resumeRef}>
+          RESUME
+        </button>
+        <br />
+        <br />
+        <button className="btn btn-danger" ref={cancelRef}>
+          CANCEL
+        </button>
       </div>
+      <hr />
+      <br/>
+      <h1>List Uploads</h1>
+
+      <ListUploads></ListUploads>
     </>
   );
 }
