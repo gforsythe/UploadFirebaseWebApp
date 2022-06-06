@@ -1,14 +1,16 @@
 import React, { useState, useEffect } from "react";
 import { storage } from "../../Utils/firebase";
-import { ref, listAll, getDownloadURL, deleteObject } from "firebase/storage";
+import { ref, listAll, getDownloadURL,deleteObject } from "firebase/storage";
 function ListUploads() {
   const [image, setImage] = useState([]);
   const listRef = ref(storage, "images");
   useEffect(() => {
     grabImages();
-
-    return () => {};
-  }, [image]);
+    
+    return () => {
+     
+    };
+  }, []);
 
   function grabImages() {
     listAll(listRef)
@@ -28,8 +30,14 @@ function ListUploads() {
       });
   }
 
-  function handleDelete(){
-  
+  function handleDelete(name){
+    let pictureRef = ref(storage, `images/${name}`);
+    deleteObject(pictureRef).then(()=>{
+      alert("Item is deleted")
+
+    }).catch((error) =>{
+      console.log("whoops this is the error",error);
+    }) 
   }
 
   return (
@@ -40,7 +48,7 @@ function ListUploads() {
           <br/>
           <a className="btn btn-info" href={item.link}>Open me</a>
           <br/>
-          <button onClick={() => handleDelete(i)} className="btn btn-warning">DELETE</button>
+          <button onClick={() => handleDelete(item.name)} className="btn btn-warning">DELETE</button>
           <br/>
           <br/>
         </li>
