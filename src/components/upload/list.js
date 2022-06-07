@@ -5,10 +5,10 @@ function ListUploads() {
   const [image, setImage] = useState([]);
   const listRef = ref(storage, "images");
   useEffect(() => {
-    grabImages();
     
     return () => {
-     
+      grabImages();
+    
     };
   }, []);
 
