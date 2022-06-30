@@ -1,12 +1,12 @@
 import React, { useEffect, useState } from "react";
 import { db } from "../../Utils/firebase";
-import { collection, getDocs, onSnapshot} from "firebase/firestore";
+import { collection, getDocs, onSnapshot, query, where,} from "firebase/firestore";
 import { firebaseLooper } from "../../Utils/tools";
 import Form from './Form';
 function Cars() {
   const [cars, setCars] = useState([{name: "PLEASE STAND BY", id:"LOADING ..."}]);
   const carRef = collection(db, "cars");
-
+  // const q = query(carRef, where("colour","==", "pink" ));
   useEffect(
       () => {
   //           //gets all id and data - onSnapshot is a live call to database, getDocs does not => snapshot shoots through requests.
@@ -21,6 +21,16 @@ function Cars() {
       ({...doc.data(), id: doc.id})))
    
   })
+
+  // getDocs(q).then((snapshot) => {
+      
+  //       setCars(snapshot.docs.map((doc) => 
+        
+  //       ({...doc.data(), id: doc.id})))
+     
+  //   })
+
+
       },[]);
 
   

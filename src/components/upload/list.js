@@ -7,11 +7,12 @@ function ListUploads() {
   useEffect(() => {
     
     return () => {
-      grabImages();
-    
+      
+      grabImages() ;
     };
+   
   }, []);
-
+ 
   function grabImages() {
     listAll(listRef)
       .then((res) => {

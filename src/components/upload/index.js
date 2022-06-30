@@ -13,7 +13,9 @@ function Upload() {
   const handleUpload = (e) => {
     e.preventDefault();
     console.log("Clicked");
-    let fileRef = ref(storage, `images/${selectedFile.name}`);
+    let getUserId = auth.currentUser.uid;
+
+    let fileRef = ref(storage, `users/${getUserId}/${selectedFile.name}`);
     const metadata = {
       customMetadata: {
         PLEASE: "WORK",
