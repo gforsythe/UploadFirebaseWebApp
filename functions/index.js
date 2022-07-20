@@ -52,7 +52,7 @@ exports.addLog = functions.https.onCall(async(data, context)=>{
 
     const addLog = await admin.firestore().collection('logs').add(log);
 
-    return `result: ${addLog.id}`; 
+    return `booya: ${addLog.id}`; 
 
 
 });
