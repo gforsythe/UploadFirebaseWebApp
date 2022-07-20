@@ -1,7 +1,7 @@
 import { sendEmailVerification } from "firebase/auth";
 import { addDoc, collection, doc, setDoc } from "firebase/firestore";
 import React, { useState } from "react";
-
+import {getFunctions, httpsCallable} from "firebase/functions"
 import {
   auth,
   db,
@@ -166,6 +166,20 @@ const provider = new googleAuthPro()
     });
   }
 
+  function handleCallabeFunction(){
+    console.log("trigger");
+    const functions = getFunctions();
+    const addLog = httpsCallable(functions, 'addLog');
+    addLog({
+      message: "hello! new message2"
+    })
+    .then((result)=>{
+
+      const data = result.data;
+      console.log(data);
+    })
+  }
+
   return (
     <div>
       <form onSubmit={(e) => handleForm(e)}>
@@ -215,6 +229,11 @@ const provider = new googleAuthPro()
           
           Log in with Google
         </button>
+
+        <hr />
+      <button className="btn btn-warning" onClick={handleCallabeFunction}>
+        Trigger Cloud Function
+      </button>
     </div>
   );
 }
