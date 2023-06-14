@@ -16,7 +16,7 @@ import {
 
 function LoginForm() {
   //creates a user object with email and password
-  const [userInfo, setUser] = useState({
+  const [userInfo, setUserInfo] = useState({
     email: "",
     password: "",
   });
@@ -70,7 +70,7 @@ function LoginForm() {
   function changeHandler(e) {
     let name = e.target.name;
     let value = e.target.value;
-    setUser((prevState) => ({
+    setUserInfo((prevState) => ({
       ...prevState,
       [name]: value,
     }));
